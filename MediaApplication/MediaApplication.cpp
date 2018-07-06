@@ -24,7 +24,7 @@
  */
 
 #include "VCCompat.h"
-//#include "config.h"
+#include "myconfig.h"
 #include <inttypes.h>
 #include <math.h>
 #include <limits.h>
@@ -53,7 +53,7 @@ extern "C"
 #include "libavcodec/avfft.h"
 #include "libswresample/swresample.h"
 
-#define CONFIG_AVFILTER 0
+//#define CONFIG_AVFILTER 0
 #if CONFIG_AVFILTER
 # include "libavfilter/avfilter.h"
 # include "libavfilter/buffersink.h"
@@ -66,13 +66,10 @@ extern "C"
 
 #include <SDL.h>
 #include <SDL_thread.h>
+#include <windows.h>
+#include <assert.h>
 #include "Baselibs.h"
 
-#define _WIN32
-#ifdef _WIN32
-#include <windows.h>
-#endif
-#include <assert.h>
 
 #define AV_TIME_BASE_Q   _AVRational(1, AV_TIME_BASE)
 
@@ -328,7 +325,7 @@ typedef struct VideoState {
     int last_video_stream, last_audio_stream, last_subtitle_stream;
 
     SDL_cond *continue_read_thread;
-    enum ShowMode show_mode;
+    ShowMode show_mode;
 } VideoState;
 
 /* options specified by the user */
@@ -3597,123 +3594,12 @@ static void event_loop(VideoState *cur_stream)
     }
 }
 
-//static int opt_frame_size(void *optctx, const char *opt, const char *arg)
-//{
-//    av_log(NULL, AV_LOG_WARNING, "Option -s is deprecated, use -video_size.\n");
-//    return opt_default(NULL, "video_size", arg);
-//}
-
-//static int opt_width(void *optctx, const char *opt, const char *arg)
-//{
-//    screen_width = parse_number_or_die(opt, arg, OPT_INT64, 1, INT_MAX);
-//    return 0;
-//}
-
-//static int opt_height(void *optctx, const char *opt, const char *arg)
-//{
-//    screen_height = parse_number_or_die(opt, arg, OPT_INT64, 1, INT_MAX);
-//    return 0;
-//}
-
-//static int opt_format(void *optctx, const char *opt, const char *arg)
-//{
-//    file_iformat = av_find_input_format(arg);
-//    if (!file_iformat) {
-//        av_log(NULL, AV_LOG_FATAL, "Unknown input format: %s\n", arg);
-//        return AVERROR(EINVAL);
-//    }
-//    return 0;
-//}
-
-//static int opt_frame_pix_fmt(void *optctx, const char *opt, const char *arg)
-//{
-//    av_log(NULL, AV_LOG_WARNING, "Option -pix_fmt is deprecated, use -pixel_format.\n");
-//    return opt_default(NULL, "pixel_format", arg);
-//}
-
-//static int opt_sync(void *optctx, const char *opt, const char *arg)
-//{
-//    if (!strcmp(arg, "audio"))
-//        av_sync_type = AV_SYNC_AUDIO_MASTER;
-//    else if (!strcmp(arg, "video"))
-//        av_sync_type = AV_SYNC_VIDEO_MASTER;
-//    else if (!strcmp(arg, "ext"))
-//        av_sync_type = AV_SYNC_EXTERNAL_CLOCK;
-//    else {
-//        av_log(NULL, AV_LOG_ERROR, "Unknown value for %s: %s\n", opt, arg);
-//        exit(1);
-//    }
-//    return 0;
-//}
-
-//static int opt_seek(void *optctx, const char *opt, const char *arg)
-//{
-//    start_time = parse_time_or_die(opt, arg, 1);
-//    return 0;
-//}
-
-//static int opt_duration(void *optctx, const char *opt, const char *arg)
-//{
-//    duration = parse_time_or_die(opt, arg, 1);
-//    return 0;
-//}
-
-//static int opt_show_mode(void *optctx, const char *opt, const char *arg)
-//{
-//    show_mode = (enum ShowMode)(!strcmp(arg, "video") ? SHOW_MODE_VIDEO :
-//                !strcmp(arg, "waves") ? SHOW_MODE_WAVES :
-//                !strcmp(arg, "rdft" ) ? SHOW_MODE_RDFT  :
-//                parse_number_or_die(opt, arg, OPT_INT, 0, SHOW_MODE_NB-1));
-//    return 0;
-//}
-
-//static void opt_input_file(void *optctx, const char *filename)
-//{
-//    if (input_filename) {
-//        av_log(NULL, AV_LOG_FATAL,
-//               "Argument '%s' provided as input filename, but '%s' was already specified.\n",
-//                filename, input_filename);
-//        exit(1);
-//    }
-//    if (!strcmp(filename, "-"))
-//        filename = "pipe:";
-//    input_filename = filename;
-//}
-
-//static int opt_codec(void *optctx, const char *opt, const char *arg)
-//{
-//   const char *spec = strchr(opt, ':');
-//   if (!spec) {
-//       av_log(NULL, AV_LOG_ERROR,
-//              "No media specifier was specified in '%s' in option '%s'\n",
-//               arg, opt);
-//       return AVERROR(EINVAL);
-//   }
-//   spec++;
-//   switch (spec[0]) {
-//   case 'a' :    audio_codec_name = arg; break;
-//   case 's' : subtitle_codec_name = arg; break;
-//   case 'v' :    video_codec_name = arg; break;
-//   default:
-//       av_log(NULL, AV_LOG_ERROR,
-//              "Invalid media specifier '%s' in option '%s'\n", spec, opt);
-//       return AVERROR(EINVAL);
-//   }
-//   return 0;
-//}
-
-static int dummy;
-
-
-
 static void show_usage(void)
 {
     av_log(NULL, AV_LOG_INFO, "Simple media player\n");
     av_log(NULL, AV_LOG_INFO, "usage: %s [options] input_file\n", program_name);
     av_log(NULL, AV_LOG_INFO, "\n");
 }
-
-
 
 static int lockmgr(void **mtx, enum AVLockOp op)
 {

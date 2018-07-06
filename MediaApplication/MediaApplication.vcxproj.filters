@@ -26,19 +26,7 @@
     <ClInclude Include="VCCompat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cmdutils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="va_copy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MediaCore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseHeader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ffplay_base.h">
+    <ClInclude Include="myconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
